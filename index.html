@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width">
+		<title>Panel Survey</title>
+		<link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
+		<link rel="stylesheet" href="https://get.mavo.io/mavo.css">
+		<script src="https://get.mavo.io/mavo.es5.js"></script>
+		<script src="https://firebase-plugin.netlify.app/src/mavo-firebase-firestore.js"></script>
+		<link href="style.css" rel="stylesheet">
+		<script defer src="panels.js"></script>
+		<style>
+			.panelist:not(:last-of-type):after {
+					content: ", "
+			}
+			h2 {
+					margin-top: 2em;
+			}
+			[mv-list-item="panel"]  {
+					margin-left: 2ex;
+					margin-bottom: 2ex;
+			}
+			[mv-list-item="panel"] div {
+					margin-left: 2ex;
+			}
+		</style>
+	</head>
+	<body>
+		<section mv-app="mine" mv-mode="edit"
+						 mv-bar="status login logout"
+						 mv-storage-options="auth realtime skip-unsaved-data-warning"
+						 mv-plugins="firebase-firestore"
+						 mv-autosave="1"
+						 mv-storage="firebase://mavo-cd7c3/panels/[uid]"
+						 mv-storage-key="AIzaSyC0PxY82lVLTLv80ZU1z5sz1azoYZits0I"
+						 >
+			<h2>My Proposed Panels</h2>
+			<meta property="proposerName" mv-value="$user.name"
+						mv-storage="inherit">
+			<meta property="uid" mv-value="$user.info.uid" mv-storage="inherit">
+			<div mv-list="panel" mv-initial-items="0" mv-order="desc">
+				<div mv-list-item="panel">
+					<h3 property="title"></h3>
+					<meta style="display:none" property="id" mv-default="[uid & '/' & $now]">
+					<div>
+						<p property="description"></p>
+					</div>
+					<div>
+						<b>Possible panelists:</b>
+						<span mv-list="panelist" mv-initial-items="0">
+							<span class="panelist" mv-list-item></span>
+						</span>
+						<button class="mv-add-panelist">+</button>
+					</div>
+				</div>
+			</div>
+			<div style="display:none" mv-list="likes" mv-initial-items="0"></div>
+		</section>
+
+		<section mv-app="all" mv-bar="none"
+						 mv-source="firebase://mavo-cd7c3/panels/"
+						 mv-source-options="realtime"
+						 mv-source-query>
+			<h2>All Proposed Panels</h2>
+			<div mv-list="$items">
+				<div mv-list-item>
+					<div property="data">
+						<meta property="proposerName" mv-value="$user.name">
+						<meta property="uid" mv-value="$user.info.uid">
+						<div mv-list="likes" style="display:none"></div>
+						<div mv-list="panel" mv-initial-items="0" mv-order="desc">
+							<div mv-list-item="panel">
+								<meta style="display:none" property="id">
+								<meta property="liked" mv-value="has(id,mine.likes)">
+								<meta property="likeCount" mv-value="count((votes where $value=id).$items)">
+								<h3><span property="title"></span>
+									<label>
+										<button mv-if="!liked"
+														mv-action="add(id,mine.likes)">
+											<span style="filter: grayscale(100%)">👍</span>
+										</button>
+										<button mv-if="liked"
+														mv-action="set(mine.likes,condense(filter(mine.likes,mine.likes!=id)))">👍</button>
+										<span mv-if="likeCount">([likeCount])</span>
+									</label>
+								</h3>
+
+								<div>
+									<p property="description"></p>
+								</div>
+								<div>
+									<b>Possible panelists:</b>
+									<span mv-list="panelist" mv-initial-items="0">
+										<span class="panelist" mv-list-item></span>
+									</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<meta mv-list="votes" mv-value="$items.likes by $items.likes">
+		</section>
+	</body>
+</html>
