@@ -1,0 +1,78 @@
+body{
+	--main-color: #FDC671;
+	--second-color: #FBA521;
+	--font-color: #423E38;
+	--clickable: #FCE772;
+	--title-color: #D9C7EB;
+	color: var(--font-color);
+	font-family: Helvetica, sans-serif;
+}
+
+div.mv-bar.mv-ui{
+	background: var(--main-color);
+}
+
+.mv-bar.mv-ui button{
+	font-size: 20px;
+	color: var(--font-color);
+}
+
+section[mv-app="mine"] button{
+	background: var(--second-color);
+	border-radius: 4px;
+	border: 0;
+}
+
+section[mv-app="all"] button{
+	background: white;
+	border-radius: 4px;
+	border: 1px solid lightgray;
+}
+
+section button:hover{
+	cursor: pointer;
+	background: var(--main-color);
+}
+
+section button.mv-add-panel{
+	font-size: 22px;
+	color: whitesmoke;
+	padding: 5px 30px 5px 30px;
+	margin-top: 10px;
+	font-family: monospace;
+	font-weight: 600;	
+}
+
+section button.mv-add-panelist{
+	font-size: 15px;
+	color: whitesmoke;		
+}
+
+section button span{
+	margin-right: 0;
+}
+
+section h2 {
+	margin: 50px 0 0 0;
+	padding: 5px 20px 5px 10px;
+	background: var(--title-color);
+}
+
+div h3 {
+	margin-top: 0;	
+}
+
+section {
+	padding: 0 20px 20px 20px;
+}
+
+div[mv-group] div[mv-group] div[mv-group],
+section[mv-app="mine"] div[mv-group]{
+	margin-top: 10px;
+	padding: 10px 10px 10px 10px;
+	background: #FAF7FA;
+	border-radius: 3px;
+	border: 1px solid lightgray;
+}
+
+
